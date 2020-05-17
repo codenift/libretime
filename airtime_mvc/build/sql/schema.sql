@@ -755,6 +755,7 @@ CREATE TABLE "podcast"
     "itunes_category" VARCHAR(4096),
     "itunes_explicit" VARCHAR(4096),
     "owner" INTEGER,
+    "track_type" VARCHAR(16),
     PRIMARY KEY ("id")
 );
 
