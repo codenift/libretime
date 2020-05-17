@@ -54,6 +54,7 @@ class PodcastTableMap extends TableMap
         $this->addColumn('itunes_category', 'DbItunesCategory', 'VARCHAR', false, 4096, null);
         $this->addColumn('itunes_explicit', 'DbItunesExplicit', 'VARCHAR', false, 4096, null);
         $this->addForeignKey('owner', 'DbOwner', 'INTEGER', 'cc_subjs', 'id', false, null, null);
+        $this->addColumn('track_type', 'DbTrackType', 'VARCHAR', false, 16, null);
         // validators
     } // initialize()
 

@@ -21,6 +21,34 @@
                     <input name="podcast_auto_ingest"  id="podcast_auto_ingest" ng-model="podcast.auto_ingest" type="checkbox"/>
                 </div>
             </div>
+            <div class="podcast-metadata-row">
+                <label for="podcast_track_type"><?php echo _("Track Type Default: ") ?></label>
+                <?php
+                $track_type_options = array(NULL  => _("None"));
+                $track_types = Application_Model_Tracktype::getTracktypes();
+                foreach ($track_types as $key => $tt) {
+                    $track_type_options[$tt['code']] = $tt['type_name'];
+                }
+                ?>
+                  <select name="podcast_track_type" ng-model="podcast.track_type" class="form-control">
+                      <?php
+                      echo "<option value=''>None</option>";
+
+                      foreach ($track_types as $key => $tt) {
+
+                          $ttsaved = "{{podcast.track_type}}";
+
+                          $selected = "";
+                          if ($ttsaved == $tt['code']) {
+                              $selected = "selected";
+                          }
+                          $code = $tt['code'];
+                          $typename = $tt['type_name'];
+                          echo "<option value='$code' $selected>$typename</option>";
+                      }
+                  ?>
+                </select>
+            </div>
             <div class="podcast-metadata-row" >
                 <label><?php echo _("Scheduling:") ?></label>
                 <div>
