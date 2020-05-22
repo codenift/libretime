@@ -784,6 +784,7 @@ CREATE TABLE "imported_podcast"
     "auto_ingest_timestamp" TIMESTAMP,
     "album_override" BOOLEAN DEFAULT 'f' NOT NULL,
     "podcast_id" INTEGER NOT NULL,
+    "track_type" VARCHAR(16),
     PRIMARY KEY ("id")
 );
 
