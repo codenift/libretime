@@ -66,7 +66,8 @@ var AIRTIME = (function (AIRTIME) {
                 {
                     csrf_token: $("#csrf").val(), 
                     id: $scope.podcast.id,
-                    title: $scope.podcast.title
+                    title: $scope.podcast.title,
+                    track_type: $scope.podcast.track_type
                 }, 
                 function() {
                     // show success message

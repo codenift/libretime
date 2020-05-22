@@ -144,7 +144,7 @@ class Application_Service_PodcastService
      * This will automatically create a smartblock and playlist for this podcast.
      */
 
-    public static function createPodcastSmartblockAndPlaylist($podcast, $title = null)
+    public static function createPodcastSmartblockAndPlaylist($podcast, $title = null, $track_type = null)
     {
         if (is_array($podcast)) {
             $newpodcast = new Podcast();
@@ -153,6 +153,9 @@ class Application_Service_PodcastService
         }
         if ($title == null) {
             $title = $podcast->getDbTitle();
+        }
+        if ($track_type == null) {
+            $track_type = $podcast->getDbTrackType();
         }
         // Base class
         $newBl = new Application_Model_Block();
@@ -183,6 +186,16 @@ class Application_Service_PodcastService
         $row->setDbValue($title);
         $row->setDbBlockId($newBl->getId());
         $row->save();
+        
+        // add track type to smartblock
+        if ($track_type != null) {
+           $row = new CcBlockcriteria();
+           $row->setDbCriteria('track_type');
+           $row->setDbModifier('is');
+           $row->setDbValue($track_type);
+           $row->setDbBlockId($newBl->getId());
+           $row->save();
+        }
 
         $newPl = new Application_Model_Playlist();
         $newPl->setName($title);

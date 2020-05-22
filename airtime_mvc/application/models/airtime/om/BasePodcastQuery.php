@@ -21,6 +21,7 @@
  * @method PodcastQuery orderByDbItunesCategory($order = Criteria::ASC) Order by the itunes_category column
  * @method PodcastQuery orderByDbItunesExplicit($order = Criteria::ASC) Order by the itunes_explicit column
  * @method PodcastQuery orderByDbOwner($order = Criteria::ASC) Order by the owner column
+ * @method PodcastQuery orderByDbTrackType($order = Criteria::ASC) Order by the track_type column
  *
  * @method PodcastQuery groupByDbId() Group by the id column
  * @method PodcastQuery groupByDbUrl() Group by the url column
@@ -37,6 +38,7 @@
  * @method PodcastQuery groupByDbItunesCategory() Group by the itunes_category column
  * @method PodcastQuery groupByDbItunesExplicit() Group by the itunes_explicit column
  * @method PodcastQuery groupByDbOwner() Group by the owner column
+ * @method PodcastQuery groupByDbTrackType() Group by the track_type column
  *
  * @method PodcastQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PodcastQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -75,6 +77,7 @@
  * @method Podcast findOneByDbItunesCategory(string $itunes_category) Return the first Podcast filtered by the itunes_category column
  * @method Podcast findOneByDbItunesExplicit(string $itunes_explicit) Return the first Podcast filtered by the itunes_explicit column
  * @method Podcast findOneByDbOwner(int $owner) Return the first Podcast filtered by the owner column
+ * @method Podcast findOneByDbTrackType(string $track_type) Return the first Podcast filtered by the track_type column
  *
  * @method array findByDbId(int $id) Return Podcast objects filtered by the id column
  * @method array findByDbUrl(string $url) Return Podcast objects filtered by the url column
@@ -91,6 +94,7 @@
  * @method array findByDbItunesCategory(string $itunes_category) Return Podcast objects filtered by the itunes_category column
  * @method array findByDbItunesExplicit(string $itunes_explicit) Return Podcast objects filtered by the itunes_explicit column
  * @method array findByDbOwner(int $owner) Return Podcast objects filtered by the owner column
+ * @method array findByDbTrackType(string $track_type) Return Podcast objects filtered by the track_type column
  *
  * @package    propel.generator.airtime.om
  */
@@ -198,7 +202,7 @@ abstract class BasePodcastQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT "id", "url", "title", "creator", "description", "language", "copyright", "link", "itunes_author", "itunes_keywords", "itunes_summary", "itunes_subtitle", "itunes_category", "itunes_explicit", "owner" FROM "podcast" WHERE "id" = :p0';
+        $sql = 'SELECT "id", "url", "title", "creator", "description", "language", "copyright", "link", "itunes_author", "itunes_keywords", "itunes_summary", "itunes_subtitle", "itunes_category", "itunes_explicit", "owner", "track_type" FROM "podcast" WHERE "id" = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -749,6 +753,35 @@ abstract class BasePodcastQuery extends ModelCriteria
 
         return $this->addUsingAlias(PodcastPeer::OWNER, $dbOwner, $comparison);
     }
+
+    /**
+      * Filter the query on the track_type column
+      *
+      * Example usage:
+      * <code>
+      * $query->filterByDbTrackType('fooValue');   // WHERE title = 'fooValue'
+      * $query->filterByDbTrackType('%fooValue%'); // WHERE title LIKE '%fooValue%'
+      * </code>
+      *
+      * @param     string $dbTrackType The value to use as filter.
+      *              Accepts wildcards (* and % trigger a LIKE)
+      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+      *
+      * @return PodcastQuery The current query, for fluid interface
+      */
+     public function filterByDbTrackType($dbTrackType = null, $comparison = null)
+     {
+         if (null === $comparison) {
+             if (is_array($dbTrackType)) {
+                 $comparison = Criteria::IN;
+             } elseif (preg_match('/[\%\*]/', $dbTrackType)) {
+                 $dbTrackType = str_replace('*', '%', $dbTrackType);
+                 $comparison = Criteria::LIKE;
+             }
+         }
+
+         return $this->addUsingAlias(PodcastPeer::TRACK_TYPE, $dbTrackType, $comparison);
+     }
 
     /**
      * Filter the query by a related CcSubjs object

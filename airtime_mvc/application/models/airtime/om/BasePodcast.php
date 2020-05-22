@@ -118,6 +118,11 @@ abstract class BasePodcast extends BaseObject implements Persistent
      * @var        int
      */
     protected $owner;
+    
+   /**
+    * The value for the track type field. * @var string
+    */
+    protected $track_type;
 
     /**
      * @var        CcSubjs
@@ -343,6 +348,17 @@ abstract class BasePodcast extends BaseObject implements Persistent
     {
 
         return $this->owner;
+    }
+    
+    /**
+     * Get the [track_type] column value.
+     *
+     * @return string
+     */
+    public function getDbTrackType()
+    {
+
+        return $this->track_type;
     }
 
     /**
@@ -663,6 +679,27 @@ abstract class BasePodcast extends BaseObject implements Persistent
 
         return $this;
     } // setDbOwner()
+    
+    /**
+     * Set the value of [track_type] column.
+     *
+     * @param  string $v new value
+     * @return Podcast The current object (for fluent API support)
+     */
+    public function setDbTrackType($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->track_type !== $v) {
+            $this->track_type = $v;
+            $this->modifiedColumns[] = PodcastPeer::TRACK_TYPE;
+        }
+
+
+        return $this;
+    } // setDbTrackType()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -711,6 +748,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
             $this->itunes_category = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->itunes_explicit = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->owner = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->track_type = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -720,7 +758,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 15; // 15 = PodcastPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = PodcastPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Podcast object", $e);
@@ -1060,6 +1098,9 @@ abstract class BasePodcast extends BaseObject implements Persistent
         if ($this->isColumnModified(PodcastPeer::OWNER)) {
             $modifiedColumns[':p' . $index++]  = '"owner"';
         }
+        if ($this->isColumnModified(PodcastPeer::TRACK_TYPE)) {
+            $modifiedColumns[':p' . $index++]  = '"track_type"';
+        }
 
         $sql = sprintf(
             'INSERT INTO "podcast" (%s) VALUES (%s)',
@@ -1115,6 +1156,9 @@ abstract class BasePodcast extends BaseObject implements Persistent
                         break;
                     case '"owner"':
                         $stmt->bindValue($identifier, $this->owner, PDO::PARAM_INT);
+                        break;
+                    case '"track_type"':
+                        $stmt->bindValue($identifier, $this->track_type, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1324,6 +1368,9 @@ abstract class BasePodcast extends BaseObject implements Persistent
             case 14:
                 return $this->getDbOwner();
                 break;
+            case 15:
+            return $this->getDbTrackType();
+            break;
             default:
                 return null;
                 break;
@@ -1368,6 +1415,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
             $keys[12] => $this->getDbItunesCategory(),
             $keys[13] => $this->getDbItunesExplicit(),
             $keys[14] => $this->getDbOwner(),
+            $keys[15] => $this->getDbTrackType(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1466,6 +1514,9 @@ abstract class BasePodcast extends BaseObject implements Persistent
             case 14:
                 $this->setDbOwner($value);
                 break;
+            case 15:
+                $this->setDbTrackType($value);
+                break;
         } // switch()
     }
 
@@ -1505,6 +1556,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
         if (array_key_exists($keys[12], $arr)) $this->setDbItunesCategory($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setDbItunesExplicit($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setDbOwner($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setDbTrackType($arr[$keys[15]]);
     }
 
     /**
@@ -1531,6 +1583,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
         if ($this->isColumnModified(PodcastPeer::ITUNES_CATEGORY)) $criteria->add(PodcastPeer::ITUNES_CATEGORY, $this->itunes_category);
         if ($this->isColumnModified(PodcastPeer::ITUNES_EXPLICIT)) $criteria->add(PodcastPeer::ITUNES_EXPLICIT, $this->itunes_explicit);
         if ($this->isColumnModified(PodcastPeer::OWNER)) $criteria->add(PodcastPeer::OWNER, $this->owner);
+        if ($this->isColumnModified(PodcastPeer::TRACK_TYPE)) $criteria->add(PodcastPeer::TRACK_TYPE, $this->track_type);
 
         return $criteria;
     }
@@ -1608,6 +1661,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
         $copyObj->setDbItunesCategory($this->getDbItunesCategory());
         $copyObj->setDbItunesExplicit($this->getDbItunesExplicit());
         $copyObj->setDbOwner($this->getDbOwner());
+        $copyObj->setDbTrackType($this->getDbTrackType());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2478,6 +2532,7 @@ abstract class BasePodcast extends BaseObject implements Persistent
         $this->itunes_category = null;
         $this->itunes_explicit = null;
         $this->owner = null;
+        $this->track_type = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
