@@ -1,0 +1,1 @@
+ALTER TABLE podcast ADD COLUMN track_type VARCHAR(16);

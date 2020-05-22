@@ -602,6 +602,7 @@
     <column name="itunes_category" phpName="DbItunesCategory" type="VARCHAR" size="4096" />
     <column name="itunes_explicit" phpName="DbItunesExplicit" type="VARCHAR" size="4096" />
     <column name="owner" phpName="DbOwner" type="INTEGER" />
+    <column name="track_type" phpName="DbTrackType" type="VARCHAR" size="16" />
     <foreign-key foreignTable="cc_subjs" name="podcast_owner_fkey" onDelete="CASCADE">
       <reference local="owner" foreign="id" />
     </foreign-key>
