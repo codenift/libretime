@@ -54,6 +54,13 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $album_override;
+    
+    /**
+      * The value for the track_type field.
+      * Note: this column has a database default value of: false
+      * @var        boolean
+      */
+     protected $track_type;
 
     /**
      * The value for the podcast_id field.
@@ -96,6 +103,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
     {
         $this->auto_ingest = false;
         $this->album_override = false;
+        $this->track_type = null;
     }
 
     /**
@@ -175,6 +183,17 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
 
         return $this->album_override;
     }
+    
+    /**
+      * Get the [track_type] column value.
+      *
+      * @return boolean
+      */
+     public function getDbTrackType()
+     {
+
+         return $this->track_type;
+     }
 
     /**
      * Get the [podcast_id] column value.
@@ -288,6 +307,31 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
 
         return $this;
     } // setDbAlbumOverride()
+    
+    /**
+      * Sets the value of the [track_type] column.
+      * Non-boolean arguments are converted using the following rules:
+      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+      *
+      * @param boolean|integer|string $v The new value
+      * @return ImportedPodcast The current object (for fluent API support)
+      */
+     public function setDbTrackType($v)
+     {
+         if ($v !== null && is_numeric($v)) {
+           $v = (string) $v;
+         }
+
+         if ($this->track_type !== $v) {
+             $this->track_type = $v;
+             $this->modifiedColumns[] = ImportedPodcastPeer::TRACK_TYPE;
+         }
+
+
+         return $this;
+     } // setDbTrackType()
 
     /**
      * Set the value of [podcast_id] column.
@@ -331,6 +375,10 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
             if ($this->album_override !== false) {
                 return false;
             }
+            
+            //if ($this->track_type !== false) {
+            //    return false;
+            //}
 
         // otherwise, everything was equal, so return true
         return true;
@@ -359,6 +407,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
             $this->auto_ingest_timestamp = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->album_override = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->podcast_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->track_type = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -621,6 +670,9 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
         if ($this->isColumnModified(ImportedPodcastPeer::PODCAST_ID)) {
             $modifiedColumns[':p' . $index++]  = '"podcast_id"';
         }
+        if ($this->isColumnModified(ImportedPodcastPeer::TRACK_TYPE)) {
+            $modifiedColumns[':p' . $index++]  = '"track_type"';
+        }
 
         $sql = sprintf(
             'INSERT INTO "imported_podcast" (%s) VALUES (%s)',
@@ -646,6 +698,9 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
                         break;
                     case '"podcast_id"':
                         $stmt->bindValue($identifier, $this->podcast_id, PDO::PARAM_INT);
+                        break;
+                    case '"track_type"':
+                        $stmt->bindValue($identifier, $this->track_type, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -801,6 +856,9 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
             case 4:
                 return $this->getDbPodcastId();
                 break;
+            case 5:
+                return $this->getDbTrackType();
+                break;
             default:
                 return null;
                 break;
@@ -835,6 +893,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
             $keys[2] => $this->getDbAutoIngestTimestamp(),
             $keys[3] => $this->getDbAlbumOverride(),
             $keys[4] => $this->getDbPodcastId(),
+            $keys[5] => $this->getDbTrackType(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -894,6 +953,9 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
             case 4:
                 $this->setDbPodcastId($value);
                 break;
+            case 5:
+                $this->setDbTrackType($value);
+                break;
         } // switch()
     }
 
@@ -923,6 +985,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setDbAutoIngestTimestamp($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDbAlbumOverride($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDbPodcastId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDbTrackType($arr[$keys[5]]);
     }
 
     /**
@@ -939,6 +1002,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
         if ($this->isColumnModified(ImportedPodcastPeer::AUTO_INGEST_TIMESTAMP)) $criteria->add(ImportedPodcastPeer::AUTO_INGEST_TIMESTAMP, $this->auto_ingest_timestamp);
         if ($this->isColumnModified(ImportedPodcastPeer::ALBUM_OVERRIDE)) $criteria->add(ImportedPodcastPeer::ALBUM_OVERRIDE, $this->album_override);
         if ($this->isColumnModified(ImportedPodcastPeer::PODCAST_ID)) $criteria->add(ImportedPodcastPeer::PODCAST_ID, $this->podcast_id);
+        if ($this->isColumnModified(ImportedPodcastPeer::TRACK_TYPE)) $criteria->add(ImportedPodcastPeer::TRACK_TYPE, $this->track_type);
 
         return $criteria;
     }
@@ -990,6 +1054,15 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
     }
 
     /**
+     * Returns the primary key for this object (row).
+     * @return int
+     */
+    public function getTrackType()
+    {
+        return $this->getDbTrackType();
+    }
+
+    /**
      * Sets contents of passed object to values from current object.
      *
      * If desired, this method can also make copies of all associated (fkey referrers)
@@ -1006,6 +1079,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
         $copyObj->setDbAutoIngestTimestamp($this->getDbAutoIngestTimestamp());
         $copyObj->setDbAlbumOverride($this->getDbAlbumOverride());
         $copyObj->setDbPodcastId($this->getDbPodcastId());
+        $copyObj->setDbTrackType($this->getDbTrackType());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1126,6 +1200,7 @@ abstract class BaseImportedPodcast extends BaseObject implements Persistent
         $this->auto_ingest_timestamp = null;
         $this->album_override = null;
         $this->podcast_id = null;
+        $this->track_type = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

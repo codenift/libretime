@@ -11,12 +11,14 @@
  * @method ImportedPodcastQuery orderByDbAutoIngestTimestamp($order = Criteria::ASC) Order by the auto_ingest_timestamp column
  * @method ImportedPodcastQuery orderByDbAlbumOverride($order = Criteria::ASC) Order by the album_override column
  * @method ImportedPodcastQuery orderByDbPodcastId($order = Criteria::ASC) Order by the podcast_id column
+ * @method ImportedPodcastQuery orderByDbTrackType($order = Criteria::ASC) Order by the track_type column
  *
  * @method ImportedPodcastQuery groupByDbId() Group by the id column
  * @method ImportedPodcastQuery groupByDbAutoIngest() Group by the auto_ingest column
  * @method ImportedPodcastQuery groupByDbAutoIngestTimestamp() Group by the auto_ingest_timestamp column
  * @method ImportedPodcastQuery groupByDbAlbumOverride() Group by the album_override column
  * @method ImportedPodcastQuery groupByDbPodcastId() Group by the podcast_id column
+ * @method ImportedPodcastQuery groupByDbTrackType() Group by the track_type column
  *
  * @method ImportedPodcastQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ImportedPodcastQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -33,12 +35,14 @@
  * @method ImportedPodcast findOneByDbAutoIngestTimestamp(string $auto_ingest_timestamp) Return the first ImportedPodcast filtered by the auto_ingest_timestamp column
  * @method ImportedPodcast findOneByDbAlbumOverride(boolean $album_override) Return the first ImportedPodcast filtered by the album_override column
  * @method ImportedPodcast findOneByDbPodcastId(int $podcast_id) Return the first ImportedPodcast filtered by the podcast_id column
+ * @method ImportedPodcast findOneByDbTrackType(string $track_type) Return the first ImportedPodcast filtered by the track_type column
  *
  * @method array findByDbId(int $id) Return ImportedPodcast objects filtered by the id column
  * @method array findByDbAutoIngest(boolean $auto_ingest) Return ImportedPodcast objects filtered by the auto_ingest column
  * @method array findByDbAutoIngestTimestamp(string $auto_ingest_timestamp) Return ImportedPodcast objects filtered by the auto_ingest_timestamp column
  * @method array findByDbAlbumOverride(boolean $album_override) Return ImportedPodcast objects filtered by the album_override column
  * @method array findByDbPodcastId(int $podcast_id) Return ImportedPodcast objects filtered by the podcast_id column
+ * @method array findByDbTrackType(string $track_type) Return ImportedPodcast objects filtered by the track_type column
  *
  * @package    propel.generator.airtime.om
  */
@@ -146,7 +150,7 @@ abstract class BaseImportedPodcastQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT "id", "auto_ingest", "auto_ingest_timestamp", "album_override", "podcast_id" FROM "imported_podcast" WHERE "id" = :p0';
+        $sql = 'SELECT "id", "auto_ingest", "auto_ingest_timestamp", "album_override", "podcast_id", "track_type" FROM "imported_podcast" WHERE "id" = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -416,6 +420,35 @@ abstract class BaseImportedPodcastQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImportedPodcastPeer::PODCAST_ID, $dbPodcastId, $comparison);
+    }
+    
+    /**
+     * Filter the query on the track_type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDbTrackType('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByDbTrackType('%fooValue%'); // WHERE title LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $dbTrackType The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ImportedPodcastQuery The current query, for fluid interface
+     */
+    public function filterByDbTrackType($dbTrackType = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($dbTrackType)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $dbTrackType)) {
+                $dbTrackType = str_replace('*', '%', $dbTrackType);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ImportedPodcastPeer::TRACK_TYPE, $dbTrackType, $comparison);
     }
 
     /**

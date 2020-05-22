@@ -198,6 +198,7 @@ class Rest_PodcastController extends Zend_Rest_Controller
     public function smartblockAction() {
 
         $title = $this->_getParam('title', []);
+        $track_type = $this->_getParam('track_type', []);
         $id = $this->_getParam('id', []);
         if (!$id) {
             return;
@@ -205,7 +206,7 @@ class Rest_PodcastController extends Zend_Rest_Controller
         $podcast = Application_Service_PodcastService::getPodcastById($id);
 
         // logging::info($podcast);
-        Application_Service_PodcastService::createPodcastSmartblockAndPlaylist($podcast, $title);
+        Application_Service_PodcastService::createPodcastSmartblockAndPlaylist($podcast, $title, $track_type);
     }
 
 

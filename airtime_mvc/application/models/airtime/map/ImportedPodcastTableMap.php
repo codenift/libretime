@@ -44,6 +44,7 @@ class ImportedPodcastTableMap extends TableMap
         $this->addColumn('auto_ingest_timestamp', 'DbAutoIngestTimestamp', 'TIMESTAMP', false, null, null);
         $this->addColumn('album_override', 'DbAlbumOverride', 'BOOLEAN', true, null, false);
         $this->addForeignKey('podcast_id', 'DbPodcastId', 'INTEGER', 'podcast', 'id', true, null, null);
+        $this->addColumn('track_type', 'DbTrackType', 'VARCHAR', false, 16, null);
         // validators
     } // initialize()
 
