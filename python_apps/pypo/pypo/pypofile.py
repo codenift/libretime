@@ -42,11 +42,13 @@ class PypoFile(Thread):
             src_md5 = media_item['md5']
         except KeyError as e:
             self.logger.warning(f"md5 not available for {src}")
+            self.logger.warning(f"md5 not available for {media_item}")
             with open(src, 'rb') as file:
                 data = file.read()
                 src_md5 = hashlib.md5(data).hexdigest()
 
         do_copy = False
+        self.logger.info(f"exists {dst}: {os.path.exists(dst)}")
         if os.path.exists(dst):
             # TODO: Check if the locally cached variant of the file is sane.
             # This used to be a filesize check that didn't end up working.
@@ -66,7 +68,7 @@ class PypoFile(Thread):
             do_copy = True
 
         media_item['file_ready'] = not do_copy
-
+        self.logger.info(f"do copy {dst}: {do_copy}")
         if do_copy:
             self.logger.info("copying from %s to local cache %s" % (src, dst))
 
