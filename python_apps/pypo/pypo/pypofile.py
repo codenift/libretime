@@ -43,9 +43,7 @@ class PypoFile(Thread):
         except KeyError as e:
             self.logger.warning(f"md5 not available for {src}")
             self.logger.warning(f"md5 not available for {media_item}")
-            with open(src, 'rb') as file:
-                data = file.read()
-                src_md5 = hashlib.md5(data).hexdigest()
+            src_md5 = ''
 
         do_copy = False
         self.logger.info(f"exists {dst}: {os.path.exists(dst)}")
