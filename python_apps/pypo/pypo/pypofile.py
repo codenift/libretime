@@ -59,7 +59,6 @@ class PypoFile(Thread):
             do_copy = True
 
         media_item['file_ready'] = not do_copy
-        self.logger.info(f"do copy {dst}: {do_copy}")
         if do_copy:
             self.logger.info("copying from %s to local cache %s" % (src, dst))
 
