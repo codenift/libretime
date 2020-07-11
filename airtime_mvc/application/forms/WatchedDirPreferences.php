@@ -42,6 +42,7 @@ class Application_Form_WatchedDirPreferences extends Zend_Form_SubForm
         $track_type = new Zend_Form_Element_Select('track_type');
         $track_type->class = 'input_text';
         $track_type->setLabel(_('Track Type:'));
+        $track_type->setRequired(true);
         $track_type->setMultiOptions($track_type_options);
         $this->addElement($track_type);
     }
