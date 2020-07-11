@@ -25,6 +25,7 @@
         <dd id="watchedFolder-element" class="block-display">
             <?php echo $this->element->getElement('watchedFolder') ?>
             <input id="watchedFolder-selection" type="button" value="<?php echo _("Choose folder")?>"></input>
+            <?php echo $this->element->getElement('track_type') ?>
             <input id="watchedFolder-ok" type="button" value="<?php echo _("Add")?>"></input>
             <?php if($this->element->getElement('watchedFolder')->hasErrors()) : ?>
                 <ul class='errors'>
