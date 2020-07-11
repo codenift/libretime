@@ -39,7 +39,7 @@ class PypoFile(Thread):
         src = media_item['uri']
         dst = media_item['dst']
         try:
-            src_md5 = media_item['md5']
+            src_md5 = media_item['metadata']['md5']
         except KeyError as e:
             self.logger.warning(f"md5 not available for {src}")
             self.logger.warning(f"md5 not available for {media_item}")
