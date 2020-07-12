@@ -28,9 +28,10 @@
             <input id="watchedFolder-ok" type="button" value="<?php echo _("Add")?>"></input>
             <select id="watchedFolder-trackType" name="trackType">
                 <option value=""><?php echo _("Select a Type")?></option>
+                <option value="TEST"><?php echo _("TEST")?></option>
                 <?php $track_types = Application_Model_Tracktype::getTracktypes(); ?>
-                <?php foreach($track_types as $key => $tt): ?>
-                <option value="<?php echo $tt['code']?>"><?php echo $tt['type_name']?></option>
+                <?php foreach($track_types as $type): ?>
+                <option value="<?php echo $type['code'] ?>"><?php echo $type['type_name'] ?></option>
                 <?php endforeach; ?>
             </select>
             <?php if($this->element->getElement('watchedFolder')->hasErrors()) : ?>
