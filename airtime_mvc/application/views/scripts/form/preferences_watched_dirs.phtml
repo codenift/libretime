@@ -26,7 +26,13 @@
             <?php echo $this->element->getElement('watchedFolder') ?>
             <input id="watchedFolder-selection" type="button" value="<?php echo _("Choose folder")?>"></input>
             <input id="watchedFolder-ok" type="button" value="<?php echo _("Add")?>"></input>
-            <?php echo $this->element->getElement('trackType') ?>
+            <select id="watchedFolder-trackType" name="trackType">
+                <option value=""><?php echo _("Select a Type")?></option>
+                <?php $track_types = Application_Model_Tracktype::getTracktypes(); ?>
+                <?php foreach($track_types as $key => $tt): ?>
+                <option value="<?php echo $tt['code']?>"><?php echo $tt['type_name']?></option>
+                <?php endforeach; ?>
+            </select>
             <?php if($this->element->getElement('watchedFolder')->hasErrors()) : ?>
                 <ul class='errors'>
                     <?php foreach($this->element->getElement('watchedFolder')->getMessages() as $error): ?>

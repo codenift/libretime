@@ -30,26 +30,6 @@ class Application_Form_WatchedDirPreferences extends Zend_Form_SubForm
                 'ViewHelper'
             )
         ));
-
-        // Add track type dropdown
-        $track_type_options = array();
-        $track_types = Application_Model_Tracktype::getTracktypes();
-        $track_type_options[""] = _('Select a Type');
-        foreach ($track_types as $key => $tt) {
-            $track_type_options[$tt['code']] = $tt['type_name'];
-        }
-
-        $track_type = new Zend_Form_Element_Select('track_type');
-        $track_type->class = 'input_text';
-        // $track_type->setLabel(_('Track Type:'));
-        $track_type->required = true;
-        $track_type->setMultiOptions($track_type_options);
-        // $this->addElement($track_type);
-        $this->addElement('select', 'trackType', array(
-            'class' => 'input_text',
-            'required' => true,
-            'options' => $track_type_options,
-        ));
     }
 
     public function verifyChosenFolder($p_form_element_id)
