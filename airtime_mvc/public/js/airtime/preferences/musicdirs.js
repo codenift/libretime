@@ -66,9 +66,10 @@ function setWatchedDirEvents() {
 
         url = baseUrl+"Preference/reload-watch-directory";
         chosen = $('#watchedFolder').val();
+        type = $('#watchedFolder-trackType').val()
 
         $.post(url,
-            {format: "json", dir: chosen, element: "watchedFolder"},
+            {format: "json", dir: chosen, element: "watchedFolder", trackType: type},
 
             function(json) {
                 $("#watched-folder-section").empty();

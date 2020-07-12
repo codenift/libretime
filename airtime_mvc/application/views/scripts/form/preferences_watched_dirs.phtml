@@ -26,7 +26,7 @@
             <?php echo $this->element->getElement('watchedFolder') ?>
             <input id="watchedFolder-selection" type="button" value="<?php echo _("Choose folder")?>"></input>
             <input id="watchedFolder-ok" type="button" value="<?php echo _("Add")?>"></input>
-            <select id="watchedFolder-trackType" name="trackType">
+            <select id="watchedFolder-trackType" name="trackType" class="input_text" style="width: 64%;">
                 <option value=""><?php echo _("Select a Type")?></option>
                 <option value="TEST"><?php echo _("TEST")?></option>
                 <?php $track_types = Application_Model_Tracktype::getTracktypes(); ?>
@@ -48,6 +48,7 @@
             <?php foreach($watched_dirs as $watched_dir): ?>
                 <dd class="block-display selected-item">
                     <?php echo ($watched_dir->getExistsFlag())?"":"<span class='ui-icon-alert'><img src='/css/images/warning-icon.png'></span>"?><span id="folderPath" style="display:block; width:350px"><?php echo htmlspecialchars($watched_dir->getDirectory());?></span></span>
+                    <span title="track_type"><?php echo $watched_dir->getType()?></span>
                     <span title="<?php echo sprintf(_("Rescan watched directory (This is useful if it is network mount and may be out of sync with %s)"), PRODUCT_NAME)?>" class="ui-icon ui-icon-refresh"></span>
                     <span title="<?php echo _("Remove watched directory")?>" class="ui-icon ui-icon-close"></span>
                 </dd>

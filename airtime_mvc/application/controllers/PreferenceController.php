@@ -413,6 +413,7 @@ class PreferenceController extends Zend_Controller_Action
     {
         $chosen = $this->getRequest()->getParam("dir");
         $element = $this->getRequest()->getParam("element");
+        $trackType = $this->getRequest()->getParam("trackType");
         $watched_dirs_form = new Application_Form_WatchedDirPreferences();
 
         $res = Application_Model_MusicDir::addWatchedDir($chosen);
