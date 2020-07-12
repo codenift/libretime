@@ -26,7 +26,7 @@
             <?php echo $this->element->getElement('watchedFolder') ?>
             <input id="watchedFolder-selection" type="button" value="<?php echo _("Choose folder")?>"></input>
             <input id="watchedFolder-ok" type="button" value="<?php echo _("Add")?>"></input>
-            <?php echo $this->element->getElement('track_type') ?>
+            <?php echo $this->element->getElement('trackType') ?>
             <?php if($this->element->getElement('watchedFolder')->hasErrors()) : ?>
                 <ul class='errors'>
                     <?php foreach($this->element->getElement('watchedFolder')->getMessages() as $error): ?>
