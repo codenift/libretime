@@ -416,7 +416,8 @@ class PreferenceController extends Zend_Controller_Action
         $trackType = $this->getRequest()->getParam("trackType");
         $watched_dirs_form = new Application_Form_WatchedDirPreferences();
 
-        $res = Application_Model_MusicDir::addWatchedDir($chosen);
+        /* Not sure how to do named parameters to hard coding defaults so i can pass trackTYpe */
+        $res = Application_Model_MusicDir::addWatchedDir($chosen, true, false, $trackType);
         if ($res['code'] != 0) {
             $watched_dirs_form->populate(array('watchedFolder' => $chosen));
             $watched_dirs_form->getElement($element)->setErrors(array($res['error']));
