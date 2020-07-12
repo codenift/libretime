@@ -28,7 +28,6 @@
             <input id="watchedFolder-ok" type="button" value="<?php echo _("Add")?>"></input>
             <select id="watchedFolder-trackType" name="trackType" class="input_text" style="width: 64%;">
                 <option value=""><?php echo _("Select a Type")?></option>
-                <option value="TEST"><?php echo _("TEST")?></option>
                 <?php $track_types = Application_Model_Tracktype::getTracktypes(); ?>
                 <?php foreach($track_types as $type): ?>
                 <option value="<?php echo $type['code'] ?>"><?php echo $type['type_name'] ?></option>
