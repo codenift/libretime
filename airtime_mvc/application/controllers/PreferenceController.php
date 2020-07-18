@@ -115,6 +115,14 @@ class PreferenceController extends Zend_Controller_Action
 
     public function directoryConfigAction()
     {
+        $config = Config::getConfig();
+
+        Zend_Layout::getMvcInstance()->assign('parent_page', 'Settings');
+
+        $baseUrl = Application_Common_OsPath::getBaseDir();
+        $this->view->headScript()->appendFile($baseUrl.'js/serverbrowse/serverbrowser.js?'.$config['airtime_version'],'text/javascript');
+        $this->view->headScript()->appendFile($baseUrl.'js/airtime/preferences/musicdirs.js?'.$config['airtime_version'],'text/javascript');
+        $this->view->form = new Application_Form_WatchedDirPreferences();
     }
 
     public function removeLogoAction()
@@ -405,9 +413,11 @@ class PreferenceController extends Zend_Controller_Action
     {
         $chosen = $this->getRequest()->getParam("dir");
         $element = $this->getRequest()->getParam("element");
+        $trackType = $this->getRequest()->getParam("trackType");
         $watched_dirs_form = new Application_Form_WatchedDirPreferences();
 
-        $res = Application_Model_MusicDir::addWatchedDir($chosen);
+        /* Not sure how to do named parameters to hard coding defaults so i can pass trackTYpe */
+        $res = Application_Model_MusicDir::addWatchedDir($chosen, true, false, $trackType);
         if ($res['code'] != 0) {
             $watched_dirs_form->populate(array('watchedFolder' => $chosen));
             $watched_dirs_form->getElement($element)->setErrors(array($res['error']));

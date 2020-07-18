@@ -183,7 +183,7 @@ SQL;
      *
      *  @param $nestedWatch - if true, bypass path check, and Watched to false
     **/
-    public static function addDir($p_path, $p_type, $userAddedWatchedDir=true, $nestedWatch=false)
+    public static function addDir($p_path, $p_type, $userAddedWatchedDir=true, $nestedWatch=false, $trackType="")
     {
         if (!is_dir($p_path)) {
             return array("code"=>2, "error"=>sprintf(_("%s is not a valid directory."), $p_path));
@@ -202,6 +202,10 @@ SQL;
             $dir = $exist_dir;
         }
 
+        /* TODO: set the trackType somehow. FOr now doing type=watched-TYPE */
+        if (!($trackType === "")) {
+            $p_type = $p_type."-".$trackType;
+        }
         $dir->setType($p_type);
         $p_path = Application_Common_OsPath::normpath($p_path)."/";
 
@@ -248,9 +252,9 @@ SQL;
      *  When $userAddedWatchedDir is true, it will set "Watched" flag to true
      *  otherwise, it will set "Exists" flag to true
     **/
-    public static function addWatchedDir($p_path, $userAddedWatchedDir=true, $nestedWatch=false)
+    public static function addWatchedDir($p_path, $userAddedWatchedDir=true, $nestedWatch=false, $trackType="")
     {
-        $res = self::addDir($p_path, "watched", $userAddedWatchedDir, $nestedWatch);
+        $res = self::addDir($p_path, "watched", $userAddedWatchedDir, $nestedWatch, $trackType);
 
         if ($res['code'] != 0) { return $res; }
 
@@ -334,7 +338,7 @@ SQL;
         $result = array();
 
         $dirs = CcMusicDirsQuery::create()
-                    ->filterByType("watched");
+                    ->filterByType("watched*");
         if ($exists !== null) {
             $dirs = $dirs->filterByExists($exists);
         }
