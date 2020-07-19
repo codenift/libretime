@@ -53,6 +53,7 @@ class ApiController extends Zend_Controller_Action
                 ->addActionContext('list-all-files'                , 'json')
                 ->addActionContext('list-all-watched-dirs'         , 'json')
                 ->addActionContext('add-watched-dir'               , 'json')
+                ->addActionContext('update-watched-dir'            , 'json')
                 ->addActionContext('remove-watched-dir'            , 'json')
                 ->addActionContext('set-storage-dir'               , 'json')
                 ->addActionContext('get-stream-setting'            , 'json')
@@ -1032,6 +1033,16 @@ class ApiController extends Zend_Controller_Action
         $path = base64_decode($request->getParam('path'));
 
         $this->view->msg = Application_Model_MusicDir::addWatchedDir($path);
+    }
+    
+    public function updateWatchedDirAction()
+    {
+        $request = $this->getRequest();
+        $id =   $request->getParam('id');
+        $path = base64_decode($request->getParam('path'));
+        $trackType =   $request->getParam('track_type');
+        
+        $this->view->msg = Application_Model_MusicDir::updateWatchedDir($id, $path, $trackType);
     }
 
     public function removeWatchedDirAction()

@@ -79,6 +79,28 @@ function setWatchedDirEvents() {
             });
     });
     
+    $('.watched-tracktype-saved').on('change', function() {
+        var url, chosen;
+        
+        var id = $(this).attr("id");
+        var dataID = $(this).attr("data-id");
+  
+        url = baseUrl+"Preference/update-watch-directory";
+        chosen = $('#watchedFolder-'+dataID).val();
+
+        type = $('#'+id).val();
+
+        $.post(url,
+            {format: "json", dir: chosen, dataID: dataID, element: id, trackType: type},
+
+            function(json) {
+                $("#watched-folder-section").empty();
+                $("#watched-folder-section").append("<h2>"+$.i18n._("Manage Media Folders")+"</h2>");
+                $("#watched-folder-section").append(json.subform);
+                setWatchedDirEvents();
+            });
+    });
+    
     $('.selected-item').find('.ui-icon-refresh').click(function(){
         var folder = $(this).prev().text();
         $.get(baseUrl+"Preference/rescan-watch-directory", {format: "json", dir: folder});

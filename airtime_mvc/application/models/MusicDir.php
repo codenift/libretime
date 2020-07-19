@@ -183,7 +183,7 @@ SQL;
      *
      *  @param $nestedWatch - if true, bypass path check, and Watched to false
     **/
-    public static function addDir($p_path, $p_type, $userAddedWatchedDir=true, $nestedWatch=false, $trackType="")
+    public static function addDir($p_path, $p_type, $userAddedWatchedDir=true, $nestedWatch=false, $trackType=false)
     {
         if (!is_dir($p_path)) {
             return array("code"=>2, "error"=>sprintf(_("%s is not a valid directory."), $p_path));
@@ -202,8 +202,14 @@ SQL;
             $dir = $exist_dir;
         }
 
-        /* TODO: set the trackType somehow. FOr now doing type=watched-TYPE */
-        if (!($trackType === "")) {
+        /* 
+        TODO: set the trackType somehow. FOr now doing type=watched-TYPE 
+        Update, Might need to come back and add new column leaving 'type' just for watched.
+        Should be good for now, can always be fixed later since we can split
+        what comes after "watched-" and pass it to new column.
+        */
+        
+        if ($trackType) {
             $p_type = $p_type."-".$trackType;
         }
         $dir->setType($p_type);
@@ -241,6 +247,26 @@ SQL;
         }
 
     }
+    
+    public static function updateTrackType($id, $p_path, $p_type, $trackType=false)
+    {
+        $exist_dir = self::getDirByPath($p_path);
+
+        if (is_null($exist_dir)) {
+            $temp_dir = new CcMusicDirs();
+            $dir = new Application_Model_MusicDir($temp_dir);
+        } else {
+            $dir = $exist_dir;
+        }
+
+        if ($trackType) {
+            $p_type = $p_type."-".$trackType;
+        }
+
+        $dir->setType($p_type);
+        $dir->setDirectory($p_path);
+
+    }
 
     /** There are 2 cases where this function can be called.
      * 1. When watched dir was added
@@ -252,7 +278,7 @@ SQL;
      *  When $userAddedWatchedDir is true, it will set "Watched" flag to true
      *  otherwise, it will set "Exists" flag to true
     **/
-    public static function addWatchedDir($p_path, $userAddedWatchedDir=true, $nestedWatch=false, $trackType="")
+    public static function addWatchedDir($p_path, $userAddedWatchedDir=true, $nestedWatch=false, $trackType=NULL)
     {
         $res = self::addDir($p_path, "watched", $userAddedWatchedDir, $nestedWatch, $trackType);
 
@@ -298,6 +324,15 @@ SQL;
         $data = array();
         $data["directory"] = $p_path;
         Application_Model_RabbitMq::SendMessageToMediaMonitor("new_watch", $data);
+
+        return $res;
+    }
+    
+    public static function updateWatchedDir($id, $p_path, $element=NULL, $trackType=NULL)
+    {
+        $res = self::updateTrackType($id, $p_path, "watched", $trackType);
+
+        if ($res['code'] != 0) { return $res; }
 
         return $res;
     }

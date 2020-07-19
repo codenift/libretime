@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 class PreferenceController extends Zend_Controller_Action
 {
@@ -10,6 +10,7 @@ class PreferenceController extends Zend_Controller_Action
         $ajaxContext->addActionContext('server-browse', 'json')
                     ->addActionContext('change-stor-directory', 'json')
                     ->addActionContext('reload-watch-directory', 'json')
+                    ->addActionContext('update-watch-directory', 'json')
                     ->addActionContext('remove-watch-directory', 'json')
                     ->addActionContext('is-import-in-progress', 'json')
                     ->addActionContext('change-stream-setting', 'json')
@@ -422,6 +423,19 @@ class PreferenceController extends Zend_Controller_Action
             $watched_dirs_form->populate(array('watchedFolder' => $chosen));
             $watched_dirs_form->getElement($element)->setErrors(array($res['error']));
         }
+
+        $this->view->subform = $watched_dirs_form->render();
+    }
+    
+    public function updateWatchDirectoryAction()
+    {   $dataID = $this->getRequest()->getParam("dataID");
+        $chosen = $this->getRequest()->getParam("dir");
+        $element = $this->getRequest()->getParam("element");
+        $trackType = $this->getRequest()->getParam("trackType");
+        $watched_dirs_form = new Application_Form_WatchedDirPreferences();
+
+        /* Not sure how to do named parameters to hard coding defaults so i can pass trackTYpe */
+        $res = Application_Model_MusicDir::updateWatchedDir($dataID, $chosen, $element, $trackType);
 
         $this->view->subform = $watched_dirs_form->render();
     }
