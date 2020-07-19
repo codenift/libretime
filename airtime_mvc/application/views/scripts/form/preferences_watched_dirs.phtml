@@ -46,19 +46,17 @@
         <?php if (count($watched_dirs) > 0): ?>
             <?php foreach($watched_dirs as $watched_dir): ?>
                 <dd class="block-display selected-item" style="padding-bottom:6px">
+                    <span title="Directory" style="font-weight: 700;">Directory: </span>
+                    <?php echo ($watched_dir->getExistsFlag())?"":"<span class='ui-icon-alert'><img src='/css/images/warning-icon.png'></span>"?><span id="folderPath" style="display:block; width:350px"><?php echo htmlspecialchars($watched_dir->getDirectory());?></span></span>
                     <?php 
                     $watchDirID = $watched_dir->getId();
                     $trackType = $watched_dir->getType();
-                    ?>
-                    <?php echo ($watched_dir->getExistsFlag())?"":"<span class='ui-icon-alert'><img src='/css/images/warning-icon.png'></span>"?><span title="Track Type" style="font-weight: 700;">Directory: </span><span id="folderPath-<?php echo $watchDirID?>" style="display:block; width:350px"><?php echo htmlspecialchars($watched_dir->getDirectory());?></span></span>
-                    <?php
-                    
-                        $parts = preg_split("/-/",$trackType);
-                        if (count($parts)>1){
-                            $track_types = Application_Model_Tracktype::getTracktypes($parts[1]);
-                            $name = $track_types[0]['type_name'];
-                            $typecode = $track_types[0]['code'];
-                        }
+                    $parts = preg_split("/-/",$trackType);
+                    if (count($parts)>1){
+                        $track_types = Application_Model_Tracktype::getTracktypes($parts[1]);
+                        $name = $track_types[0]['type_name'];
+                        $typecode = $track_types[0]['code'];
+                    }
                     ?>
                     <hr>
                     <span title="Track Type" style="font-weight: 700;">Track Type: </span>
