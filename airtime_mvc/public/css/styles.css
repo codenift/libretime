@@ -4325,8 +4325,8 @@ li .ui-state-hover {
 }
 .artwork-upload .artwork-edit input + label {
   display: inline-block;
-  width: 140px;
-  height: 140px;
+  width: 56px; /*140px*/
+  height: 56px; /*140px*/
   margin: 1px;
   border-radius: 1px;
   border: 1px solid transparent;
@@ -4349,8 +4349,8 @@ li .ui-state-hover {
   margin: auto;
 }
 .artwork-upload .artwork-preview {
-  width: 140px;
-  height: 140px;
+  width: 56px; /*140px*/
+  height: 56px; /*140px*/
   position: relative;
   border-radius: 1px;
   border: 2px solid #F8F8F8;

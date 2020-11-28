@@ -111,6 +111,71 @@
 <?php $hint = Application_Common_UsabilityHints::getUsabilityHint(); ?>
 <div class="usability_hint <?php if ($hint == "") { echo "hidden"; } ?>"><?php echo $hint; ?></div>
 
+
+<?php /*
+<div id="waveformbox"></div>
+
+
+<style>
+.waveform-container {
+position: fixed;
+top: 102px;
+left: 152px;
+width: 100%;
+-webkit-flex: 0 100%;
+-moz-flex: 0 100%;
+-ms-flex: 0 100%;
+-o-flex: 0 100%;
+flex: 0 100%;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+padding: 5px 10px 5px 10px;
+border: 1px solid #ff611f;
+background-color: #ff611f;
+color: white;
+font-size: 14px;
+text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+z-index: 99;
+ margin: 5px 10px; 
+}
+</style>
+<div id="demo" class="waveform-container">
+		<div id="waveform">
+				<!-- Here be the waveform -->
+		</div>
+
+		<div id="timeline"></div>
+
+		<div class="controls">
+				<div class="row">
+						<div class="col-sm-7">
+								<button class="btn btn-primary" data-action="play">
+										<i class="glyphicon glyphicon-play"></i>
+										Play
+										/
+										<i class="glyphicon glyphicon-pause"></i>
+										Pause
+								</button>
+						</div>
+
+						<div class="col-sm-1">
+								<i class="glyphicon glyphicon-zoom-in"></i>
+						</div>
+
+						<div class="col-sm-3">
+							<input data-action="zoom" type="range" min="20" max="5000" value="0" style="width: 100%" />
+						</div>
+
+						<div class="col-sm-1">
+								<i class="glyphicon glyphicon-zoom-out"></i>
+						</div>
+				</div>
+		</div>
+</div>
+*/ ?>
+
+
 <div class="wrapper <?php if (isset($this->layout()->parent_page)) echo "wrapper_panel";?>" id="content">
     <?php echo $this->layout()->content ?>
 </div>

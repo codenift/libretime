@@ -1877,5 +1877,5 @@ $(document).ready(function() {
         }
         Artwork.init();
     })();
-
+ 
 });

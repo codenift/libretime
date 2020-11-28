@@ -1,6 +1,56 @@
 <?php $get_artwork = FileDataHelper::getArtworkData($this->artwork, 256); ?>
+<?php //$get_artwork = Waveform::getInfo(); ?>
+<style>
+  .navtt {
+    margin-bottom: 18px;
+    margin-left: 0;
+    list-style: none;
+  }
+
+  .navtt > li > a {
+    display: block;
+  }
+  li {
+    line-height: 18px;
+  }
+  
+  .navtt-content.active{
+    display: block;
+  }
+  
+  .navtt-content.hide{
+    display: none;
+  }
+  
+  
+  .knob-labels {                            
+        font-size: 9px;
+        padding: 4px 1px 1px 1px;
+        border: 1px solid #2d2d2d;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        /*float: left;*/
+        display: block;
+        text-align: center;
+        width: 27px;
+        height: 13px;
+        /*text-indent: 100%;*/
+        white-space: nowrap;
+        /*overflow: hidden;*/
+        background-color: #434343;
+        background: -moz-linear-gradient(top, #555555 0, #434343 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #555555), color-stop(100%, #434343));
+        background: linear-gradient(top, #555555 0, #434343 100%);
+        -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+        background-clip: border-box;
+  }
+</style>
+
 <div class="ui-widget ui-widget-content block-shadow simple-formblock clearfix padded-strong edit-md-dialog">
-    <div class="track-edit-header" style="top:15px">
+    <div class="track-edit-header" style="top:45px">
         <?php if ($this->permissionDenied) { ?> <h3><?php echo _("You do not have permission to edit this track.") ?></h3> <?php } ?>
         <?php
         /*
@@ -11,10 +61,10 @@
         } */
         ?>
         <div class="track-edit-right-wrapper">
-            <div class="track-edit-right">
+            <div class="track-edit-right" style="margin-left: 80px;">
                 <div class="inner_track_editor_title" style="width: 100%;">
-                    <h2 style="line-height: 26px !important;"><span class="title_obj_name"><?php echo($this->title); ?></span></h2>
-                    <h3 style="line-height: 2px !important;"><span class=""><?php echo($this->artist_name); ?></span></h3>
+                    <div style="font-size: 20px; line-height: 24px !important;"><span class="title_obj_name"><?php echo($this->title); ?></span></div>
+                    <div style="font-size: 14px; line-height: 12px !important;"><span class=""><?php echo($this->artist_name); ?></span></div>
                 </div>
             </div>
         </div>
@@ -29,11 +79,416 @@
                     </div>
                 </div>
             </div>
+            <?php /*
             <div>
               <a href="#" class="delete-artwork" data-id="<?php echo($this->id); ?>" style="font-size: 11px;">Remove</a>
             </div>
+            */ ?>
         </div>
     </div>
-    <div style="height: 160px;"></div>
-    <?php echo $this->form; ?>
+    
+
+    
+    <div style="top:285px; width:480px;">
+      <?php 
+      // Open an audio file `track.mp3`
+      /////////$waveform = new Waveform($this->filePath); 
+      ///Waveform::$color = [255, 97, 31, 0.8];
+      //Waveform::$backgroundColor = [0, 0, 0, 0];
+      // Save its waveform to the `thumbnail.png` image file which size is 1024×512 pixels
+      //$success = $waveform->getWaveform('thumbnail.png', 512, 256);
+       //$success = $waveform->getWaveform('thumbnail.png', 512, 256, true); 
+       //////////$wavedata = $waveform->getWaveformData(512);
+       //print_r($wavedata["lines1"]);
+       /////////$waveform_json = json_encode($wavedata["lines1"]); 
+       ?>
+       <?php /*
+       $baseUrl = Application_Common_OsPath::getBaseDir();
+       $renderedWave = $baseUrl . "thumbnail.png?" . time();
+       ?> 
+       <div style="height:60px; width:350px; background:#000000; padding-top:15px">
+         <img width="100%" height="100%" src="<?php echo $renderedWave; ?>" />
+       </div> */ ?>
+       
+       <div style="height: 65px;"></div>
+        
+       <div style="width:80%">
+   			<ul class="navtt navtt-tabs nav-tabs">
+   				<li class="active">
+   					<a href="#ttab1">Details</a>
+   				</li>
+   				<li>
+   					<a href="#ttab2">Edit</a>
+   				</li>
+   				<li>
+   					<a href="#ttab3">Artwork</a>
+   				</li>
+          <li>
+   					<a href="#ttab4">File</a>
+   				</li>
+   			</ul>	
+   		</div>
+      
+      <br><br><br><br>
+      
+      <?php /*
+      <form id="track_edit_<?php echo $this->id; ?>" enctype="application/x-www-form-urlencoded" method="post" action="">
+      */ ?>    
+          
+      
+   		<section id="ttab1" class="navtt-content active">
+   			<div>
+   				 
+          <div style="width:480px;">
+              <?php echo $this->form; ?>
+          </div>
+          
+   			</div>
+   		</section>
+   		<section id="ttab2" class="navtt-content hide">
+   			<div>
+   				
+          
+          <div>
+                  <div class="controls">
+                      <div class="row">
+                          <div class="col-sm-7">
+                            
+                            <div class="btn-toolbar">
+                                  <div class="btn-group" title="Play Track">
+                                    <button class="btn btn-small btn-new" id="track-play" onClick="wavesurfer['t<?php echo $this->id; ?>'].playPause();">
+                                      <i class="icon-white icon-play"></i><span>Play</span>
+                                    </button>
+                                  </div>
+                                  <div class="btn-group" title="Edit">
+                                    <button class="btn btn-small" id="sb-edit">
+                                      <i class="icon-white icon-pencil"></i><span>Info</span>
+                                    </button>
+                                  </div>
+                                  <div class="btn-group">
+                                    <button class="btn btn-small" id="library-plus">
+                                      <i class="icon-white icon-plus"></i><span id="lib-plus-text">Add to next show</span>
+                                    </button>
+                                  </div>
+                                  <!--
+                                  <div class="btn-group" title="Delete">
+                                    <button class="btn btn-small btn-danger" id="sb-delete">
+                                      <i class="icon-white icon-trash"></i><span>Delete</span>
+                                    </button>
+                                  </div>
+                                  <div class="btn-group" title="Publish">
+                                    <button class="btn btn-small" id="publish-btn">
+                                      <i class="icon-soundcloud-white"></i>
+                                      <span>Publish</span>
+                                    </button>
+                                  </div>-->
+                                  <div title="Gain">
+                                    <div class="knob-controls" style="margin-top:34px; position:relative;">
+                                      <input id="replay_gain_knob" type="range" data-diameter="32" class="input-knob" style="top:30px"/>
+                                      
+                                      
+                                      <input type="range" data-diameter="32" class="input-knob" style="top:30px"/>
+                                      <input type="range" data-diameter="32" class="input-knob" style="top:30px"/>
+                            
+                                  
+                                      
+                                      
+                                     <div class="knob-labels"><span>GAIN</span></div>
+                                      
+                                      
+                                    </div>
+                                     
+                                  </div>
+                                   
+                            </div>
+                            <?php /*
+                              <button class="btn btn-primary" data-action="play">
+                                  <i class="glyphicon glyphicon-play"></i> Play <i class="glyphicon glyphicon-pause"></i>Pause
+                              </button>*/ ?>
+                              <?php /*<button type="button" onClick="wavesurfer['t<?php echo $this->id; ?>'].playPause();">PLAY</button>*/ ?>
+                          </div>
+                          
+                          <div class="col-sm-1">
+                              <i class="glyphicon glyphicon-zoom-in"></i>
+                          </div>
+                          <div class="col-sm-3">
+                            <input class="input-slider" data-height="11" data-action="zoom" type="range" min="20" max="290" value="0" style="width: 130px" />
+                          </div>
+                          <div class="col-sm-1">
+                              <i class="glyphicon glyphicon-zoom-out"></i>
+                          </div>
+                          
+                          <br>
+                      </div>
+                  </div>
+                  
+                  
+                 <div id="track-waveform-<?php echo $this->id; ?>">
+                     <!-- Here be the waveform --> 
+                 </div>
+
+                 <div id="timeline-<?php echo $this->id; ?>"></div>
+
+                 <br><br>
+                 
+                 
+                 <?php /*
+                 <dt id="cuein-label"><label for="cuein" class="optional">Cue In:</label></dt>
+                 <dd id="cuein-element">
+                 <input type="text" name="cuein" id="cuein" value="00:00:01.3749" class="input_text cuein_<?php echo $this->id; ?>"></dd>
+                 
+                 
+                 <dt id="cueout-label"><label for="cueout" class="optional">Cue Out:</label></dt>
+                 <dd id="cueout-element">
+                 <input type="text" name="cueout" id="cueout" value="00:00:06.4541" class="input_text cueout_<?php echo $this->id; ?>">
+               
+               
+               <dt id="replay_gain-label"><label for="replay_gain" class="optional">Replay Gain:</label></dt>
+               <dd id="replay_gain-element">
+               <input type="text" name="replay_gain" id="replay_gain" value="0" class="input_text replay_gain_<?php echo $this->id; ?>"></dd>
+               
+               
+               <dt id="bpm-label"><label for="bpm" class="optional">BPM:</label></dt>
+               <dd id="bpm-element">
+                 <input type="text" name="bpm" id="bpm" value="0" class="input_text"></dd>
+                 
+                 */ ?>
+                 
+                 
+          </div>
+          
+   			</div>
+   		</section>
+   		<section id="ttab3" class="navtt-content hide">
+   			<div>
+          
+          
+          <div class="artwork-upload" data-id="<?php echo($this->id); ?>" style="width:300px; height: 300px;">
+              <div class="artwork-edit" style="width:300px; height: 300px;">
+                  <input type='file' class="artworkUpload artwork-uploaded-<?php echo($this->id); ?>" id="artworkUpload" data-id="<?php echo($this->id); ?>" accept=".png, .jpg, .jpeg" />
+                  <label for="artworkUpload"></label>
+              </div>
+              <div id="artwork-preview" class="artwork-preview" style="width:300px; height: 300px;">
+                  <div class="artwork-preview-<?php echo($this->id); ?>" id="artworkPreview" style="background-image: url(<?php echo $get_artwork; ?>);">
+                  </div>
+              </div>
+          </div>
+          
+          <br>
+          <div>
+            <div href="#" class="delete-artwork knob-labels" data-id="<?php echo($this->id); ?>" style="font-size: 11px; width: 80px; padding:3px; cursor:pointer;"><span>Remove</span></div>
+             
+          </div>
+          
+          
+   			</div>
+   		</section>
+      <section id="ttab4" class="navtt-content hide">
+   			<div>
+          
+
+           <br>
+          ID: <?php echo $this->id; ?>
+          <br>
+          Bit Rate: <?php echo $this->bit_rate; ?>
+          <br>
+           Sample Rate: <?php echo $this->sample_rate; ?>
+           <br>
+           Format: <?php echo $this->format; ?> 
+           <br>
+           Encoded By: <?php echo $this->encoded_by; ?>
+           <br>
+           File Size: <?php echo $this->filesize; ?>
+       
+             
+   			</div>
+   		</section> 
+       
+       
+       
+       <?php /*
+      <dt id="submitButtons-label">&nbsp;</dt><dd id="submitButtons-element">
+      <button name="publishdialog" id="publishdialog" type="button" class="btn md-publish">Publish...</button>
+      <button name="editmdsave" id="editmdsave" type="button" class="btn md-save">Save</button>
+      <button name="editmdcancel" id="editmdcancel" type="button" class="btn md-cancel">Cancel</button></dd></dl>
+  
+    </form>*/ ?>
+       
+       
+    </div>
+    
+    
+    
+    <script>  
+    
+    //waveform
+    
+    var track_id      = <?php echo $this->id; ?>;
+    var selector_id   = "#track-waveform-"+<?php echo $this->id; ?>;
+    /////var peaks         = <?php //echo $waveform_json; ?>; 
+    var peaks         = null; 
+    var url           = baseUrl + 'api/get-media/file/<?php echo $this->id; ?>'; 
+    var cuein         = '<?php echo $this->cuein; ?>';
+    var cueout        = '<?php echo $this->cueout; ?>';
+    
+    renderWaveform(track_id, selector_id, peaks, url, cuein, cueout);
+    
+    //nav
+    $(document).ready(function() {
+      
+      $('.navtt-tabs > li > a').click(function(event){
+        event.preventDefault();//stop browser to take action for clicked anchor
+        
+        //get displaying tab content jQuery selector
+        var active_tab_selector = $('.navtt-tabs > li.active > a').attr('href');					
+        
+        //find actived navigation and remove 'active' css
+        var actived_nav = $('.navtt-tabs > li.active');
+        actived_nav.removeClass('active');
+        
+        //add 'active' css into clicked navigation
+        $(this).parents('li').addClass('active');
+        
+        //hide displaying tab content
+        $(active_tab_selector).removeClass('active');
+        $(active_tab_selector).addClass('hide');
+        
+        //show target tab content
+        var target_tab_selector = $(this).attr('href');
+        $(target_tab_selector).removeClass('hide');
+        $(target_tab_selector).addClass('active');
+      });
+      
+      
+      
+      
+      
+      
+      
+      
+      //$("#cuein").change(function () {
+      $(document).on('change', '#cuein', 'input', function(event) {
+          //alert(this.value);
+          //$(this).css("background-color", "purple");
+          //$(".wavesurfer-region").css("left", this.value);
+      });
+      $(document).on('change', '#cueout', 'input', function(event) {
+          //alert(this.value);
+          //$(this).css("background-color", "purple");
+          //$(".wavesurfer-region").css("left", this.value);
+      });
+      
+       
+    //  $( "#replay_gain_knob" ).mouseup(function() {
+    //    alert( "Handler for .mouseup() called." );
+    //  });
+      
+
+      //$(document).on('mouseup', '#replay_gain_knob', 'input', function(event) {
+        
+      //  alert("fsf");
+        /*  event.preventDefault();
+          event.stopPropagation();
+          var id = $(this).attr('id');
+          alert(this, id);*/
+          //$(this).css("background-color", "purple");
+          
+          //var id = $(this).attr('data-id');w
+        //  var id = $(this).value();
+        //  $("#replay_gain").value(id);
+        //$("input#replay_gain").val(id);
+        
+         //$("input#replay_gain").trigger('change');
+      //});
+      
+     
+   
+      
+      
+      $(document).on('mouseleave', '#replay_gain_knob', 'input', function() {
+        //event.preventDefault();
+        //event.stopPropagation();
+        //alert( $( this ).val() );
+        var val = $(this).val();
+        $("input#replay_gain").val(val);
+        //$(".wavesurfer-handle-end").css("top", val);
+        $(".wavesurfer-gain").css({"height":"100px"});
+        $(".wavesurfer-gain").css({"top": val});
+      });
+      
+      //$( "#replay_gain_knob" ).trigger( "click" );
+      $(document).on('mousedown', '#replay_gain_knob', 'input', function(event) {
+        event.stopPropagation(); 
+      });
+      
+      $(document).on('keyup', '#replay_gain_knob', 'input', function() {
+        //event.preventDefault();
+      //  event.stopPropagation();
+        //alert( $( this ).val() );
+        var val = $(this).val();
+        $("input#replay_gain").val(val);
+        $(".wavesurfer-gain").css({"height":"100px"});
+        $(".wavesurfer-gain").css({"top": val});
+      });
+      
+      $(document).on('change', '#replay_gain_knob', 'input', function() {
+      //  event.preventDefault();
+      //  event.stopPropagation();
+        //alert( $( this ).val() );
+        var val = $(this).val();
+        $("input#replay_gain").val(val);
+        $(".wavesurfer-gain").css({"height":"100px"});
+        $(".wavesurfer-gain").css({"top": val});
+      });
+      
+      $(document).on('focus', '#replay_gain_knob', 'input', function() {
+      //  event.preventDefault();
+      //  event.stopPropagation();
+        //alert( $( this ).val() );
+        var val = $(this).val();
+        $("input#replay_gain").val(val);
+        $(".wavesurfer-gain").css({"height":"100px"});
+        $(".wavesurfer-gain").css({"top": val});
+      });
+      
+      
+      $(document).on('change', 'input#replay_gain', 'input', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        //alert( $( this ).val() );
+        var val = $(this).val();
+        $("input#replay_gain_knob").val(val);
+        $(".wavesurfer-gain").css({"height":"100px"});
+        $(".wavesurfer-gain").css({"top": val});
+      });
+      
+      $(document).on('keyup', 'input#replay_gain', 'input', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        //alert( $( this ).val() );
+        var val = $(this).val();
+        $("input#replay_gain_knob").val(val);
+        $(".wavesurfer-gain").css({"height":"100px"});
+        $(".wavesurfer-gain").css({"top": val});
+      }); 
+      
+      
+      /*$(document).on('change', '.wavesurfer-region', 'css', function(event) {
+        var color = $(this).css("background-color");
+        alert(color);
+          //alert(this.value);
+          //$(this).css("background-color", "purple");
+          //$(".wavesurfer-region").css("left", this.value);
+      });*/
+    /*  $(document).on('change', '#cueout', 'input', function(event) {
+          //alert(this.value);
+          //$(this).css("background-color", "purple");
+          //$(".wavesurfer-region").css("left", this.value);
+      });*/
+      
+      
+      
+    });
+     
+    </script>
 </div>

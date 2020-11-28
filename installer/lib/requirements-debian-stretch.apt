@@ -19,6 +19,7 @@ libportaudio2
 libpulse0
 libsamplerate0
 libsoundtouch-ocaml
+libsox-fmt-mp3
 libtaglib-ocaml
 libvo-aacenc0
 liquidsoap
